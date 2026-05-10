@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4
-    
+
     - uses: azure/setup-kubectl@v3
       with:
         version: 'v1.29.0'
@@ -33,9 +33,7 @@ jobs:
         helm repo update
 
     - name: Deploy Ingress
-      run: helm upgrade --install ingress-nginx ingress-nginx/ingress-nginx \
-        -n ingress-nginx --create-namespace \
-        -f helm/ingress-nginx/values.yaml
+       run: helm upgrade --install ingress-nginx ingress-nginx/ingress-nginx -n ingress-nginx --create-namespace -f helm/ingress-nginx/values.yaml
 
     - name: Clean up conflicting Ingress
       run: |
@@ -43,9 +41,7 @@ jobs:
         kubectl delete ingress -n monitoring monitoring-kube-prometheus-alertmanager --ignore-not-found
 
     - name: Deploy Monitoring
-      run: helm upgrade --install monitoring prometheus-community/kube-prometheus-stack \
-        -n monitoring --create-namespace \
-        -f helm/monitoring/values.yaml
+      run: helm upgrade --install monitoring prometheus-community/kube-prometheus-stack -n monitoring --create-namespace -f helm/monitoring/values.yaml
 
     - name: Deploy MySQL
       run: |
