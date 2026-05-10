@@ -1,44 +1,48 @@
 grafana:
   adminPassword: "admin"
   resources:
-    requests: { cpu: 50m, memory: 100Mi }
-    limits: { cpu: 100m, memory: 200Mi }
+    requests: { cpu: 20m, memory: 50Mi }
+    limits: { cpu: 50m, memory: 100Mi }
   ingress:
     enabled: true
     ingressClassName: nginx
     hosts: [""]
-    path: /grafana
+    paths: ["/grafana"]
     pathType: Prefix
 
 prometheus:
   prometheusSpec:
-    retention: 6h
+    retention: 1h
     resources:
-      requests: { cpu: 100m, memory: 200Mi }
-      limits: { cpu: 200m, memory: 400Mi }
+      requests: { cpu: 50m, memory: 100Mi }
+      limits: { cpu: 100m, memory: 200Mi }
     storageSpec: { emptyDir: {} }
   ingress:
     enabled: true
     ingressClassName: nginx
     hosts: [""]
-    path: ["/prometheus"]
+    paths: ["/prometheus"]
     pathType: Prefix
 
 alertmanager:
-  resources: { requests: { cpu: 10m, memory: 50Mi }, limits: { cpu: 50m, memory: 100Mi } }
+  alertmanagerSpec:
+    resources:
+      requests: { cpu: 10m, memory: 20Mi }
+      limits: { cpu: 30m, memory: 50Mi }
+    storage: { emptyDir: {} }
   ingress:
     enabled: true
     ingressClassName: nginx
     hosts: [""]
-    path: ["/alertmanager"]
+    paths: ["/alertmanager"]
     pathType: Prefix
 
 prometheus-node-exporter:
-  resources: { requests: { cpu: 10m, memory: 30Mi }, limits: { cpu: 50m, memory: 60Mi } }
+  resources: { requests: { cpu: 10m, memory: 20Mi }, limits: { cpu: 30m, memory: 40Mi } }
   tolerations: [{ operator: "Exists" }]
 
 kube-state-metrics:
-  resources: { requests: { cpu: 10m, memory: 50Mi }, limits: { cpu: 50m, memory: 100Mi } }
+  resources: { requests: { cpu: 10m, memory: 30Mi }, limits: { cpu: 30m, memory: 60Mi } }
 
 kubeEtcd: { enabled: false }
 kubeScheduler: { enabled: false }
