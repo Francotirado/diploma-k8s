@@ -32,10 +32,10 @@ jobs:
     - name: Deploy Ingress
       run: helm upgrade --install ingress-nginx ingress-nginx/ingress-nginx -n ingress-nginx --create-namespace -f helm/ingress-nginx/values.yaml
 
-    - name: Clean up conflicting Ingress
-      run: |
-        kubectl delete ingress -n monitoring monitoring-kube-prometheus-prometheus --ignore-not-found
-        kubectl delete ingress -n monitoring monitoring-kube-prometheus-alertmanager --ignore-not-found
+#    - name: Clean up conflicting Ingress
+#      run: |
+#        kubectl delete ingress -n monitoring monitoring-kube-prometheus-prometheus --ignore-not-found
+#        kubectl delete ingress -n monitoring monitoring-kube-prometheus-alertmanager --ignore-not-found
 
     - name: Deploy Monitoring
       run: helm upgrade --install monitoring prometheus-community/kube-prometheus-stack -n monitoring --create-namespace -f helm/monitoring/values.yaml
