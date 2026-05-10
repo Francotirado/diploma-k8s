@@ -39,6 +39,11 @@ jobs:
     - name: Deploy Monitoring
       run: helm upgrade --install monitoring prometheus-community/kube-prometheus-stack -n monitoring --create-namespace -f helm/monitoring/values.yaml
 
+    - name: Deploy MySQL
+      run: |
+        kubectl apply -f manifests/mysql/
+        kubectl wait --for=condition=ready pod -l app=mysql --timeout=120s
+
     - name: Deploy App
       run: kubectl apply -f manifests/app/
 

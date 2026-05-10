@@ -23,13 +23,10 @@ spec:
         imagePullPolicy: Always
         ports: [{ containerPort: 5000 }]
         env:
-        - { name: DB_HOST, value: "" }
+        - { name: DB_HOST, value: "mysql" }
         - { name: DB_USER, value: "app" }
         - { name: DB_PASSWORD, value: "very_strong" }
         - { name: DB_NAME, value: "example" }
-        resources:
-          requests: { cpu: 50m, memory: 100Mi }
-          limits: { cpu: 150m, memory: 200Mi }
         livenessProbe:
           httpGet: { path: /, port: 5000 }
           initialDelaySeconds: 30
