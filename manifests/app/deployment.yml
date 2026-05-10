@@ -19,7 +19,7 @@ spec:
     spec:
       containers:
       - name: app
-        image: cr.yandex/cr.yandex/crppthgv7553krfpenjf/diploma-app:latest
+        image: cr.yandex/crppthgv7553krfpenjf/diploma-app:latest
         imagePullPolicy: Always
         ports: [{ containerPort: 5000 }]
         env:
