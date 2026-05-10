@@ -45,8 +45,19 @@ jobs:
         kubectl apply -f manifests/mysql/
         kubectl wait --for=condition=ready pod -l app=mysql --timeout=120s
 
-    - name: Deploy App
-      run: kubectl apply -f manifests/app/
+    # 🔹 Если это обычный push в main — деплоим latest
+    - name: Deploy App (latest)
+      if: github.ref_type != 'tag'
+      run: |
+        kubectl apply -f manifests/app/
+        kubectl rollout status deployment/diploma-app --timeout=180s
+
+    # 🔹 Если это tag — обновляем на версию
+    - name: Update image on tag
+      if: github.ref_type == 'tag'
+      run: |
+        kubectl set image deployment/diploma-app app=cr.yandex/crppthgv7553krfpenjf/diploma-app:${{ github.ref_name }} --record
+        kubectl rollout status deployment/diploma-app --timeout=180s
 
     - name: Verify
       run: kubectl wait --for=condition=ready pod -l app=diploma-app --timeout=120s
