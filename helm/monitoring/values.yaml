@@ -7,9 +7,8 @@ grafana:
     enabled: true
     ingressClassName: nginx
     hosts: [""]
-    paths:
-      - path: /grafana
-        pathType: Prefix
+    paths: ["/grafana"]
+    pathType: Prefix
 
 prometheus:
   prometheusSpec:
@@ -22,9 +21,8 @@ prometheus:
     enabled: true
     ingressClassName: nginx
     hosts: [""]
-    paths:
-      - path: /prometheus
-        pathType: Prefix
+    paths: ["/prometheus"]
+    pathType: Prefix
 
 alertmanager:
   alertmanagerSpec:
@@ -36,9 +34,8 @@ alertmanager:
     enabled: true
     ingressClassName: nginx
     hosts: [""]
-    paths:
-      - path: /alertmanager
-        pathType: Prefix
+    paths: ["/alertmanager"]
+    pathType: Prefix
 
 prometheus-node-exporter:
   resources: { requests: { cpu: 10m, memory: 20Mi }, limits: { cpu: 30m, memory: 40Mi } }
