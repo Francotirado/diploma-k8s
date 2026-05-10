@@ -3,7 +3,6 @@ name: Deploy to Kubernetes
 on:
   push:
     branches: [ main ]
-    paths: [ 'helm/**', 'manifests/**' ]
   workflow_dispatch:
 
 jobs:
