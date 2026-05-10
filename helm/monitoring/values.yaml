@@ -21,7 +21,7 @@ prometheus:
     enabled: true
     ingressClassName: nginx
     hosts: [""]
-    path: /prometheus
+    path: ["/prometheus"]
     pathType: Prefix
 
 alertmanager:
@@ -30,7 +30,7 @@ alertmanager:
     enabled: true
     ingressClassName: nginx
     hosts: [""]
-    path: /alertmanager
+    path: ["/alertmanager"]
     pathType: Prefix
 
 prometheus-node-exporter:
