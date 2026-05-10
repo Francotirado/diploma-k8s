@@ -3,6 +3,7 @@ name: Deploy to Kubernetes
 on:
   push:
     branches: [ main ]
+    tags: [ 'v*.*.*' ]
   workflow_dispatch:
 
 jobs:
@@ -12,9 +13,12 @@ jobs:
     - uses: actions/checkout@v4
     
     - uses: azure/setup-kubectl@v3
-      with: { version: 'v1.29.0' }
+      with:
+        version: 'v1.29.0'
+
     - uses: azure/setup-helm@v3
-      with: { version: 'v3.14.0' }
+      with:
+        version: 'v3.14.0'
 
     - name: Setup kubeconfig
       run: |
@@ -29,7 +33,9 @@ jobs:
         helm repo update
 
     - name: Deploy Ingress
-      run: helm upgrade --install ingress-nginx ingress-nginx/ingress-nginx -n ingress-nginx --create-namespace -f helm/ingress-nginx/values.yaml
+      run: helm upgrade --install ingress-nginx ingress-nginx/ingress-nginx \
+        -n ingress-nginx --create-namespace \
+        -f helm/ingress-nginx/values.yaml
 
     - name: Clean up conflicting Ingress
       run: |
@@ -37,15 +43,29 @@ jobs:
         kubectl delete ingress -n monitoring monitoring-kube-prometheus-alertmanager --ignore-not-found
 
     - name: Deploy Monitoring
-      run: helm upgrade --install monitoring prometheus-community/kube-prometheus-stack -n monitoring --create-namespace -f helm/monitoring/values.yaml
+      run: helm upgrade --install monitoring prometheus-community/kube-prometheus-stack \
+        -n monitoring --create-namespace \
+        -f helm/monitoring/values.yaml
 
     - name: Deploy MySQL
       run: |
         kubectl apply -f manifests/mysql/
         kubectl wait --for=condition=ready pod -l app=mysql --timeout=120s
 
-    - name: Deploy App
-      run: kubectl apply -f manifests/app/
+    # 🔹 Если это обычный push в main — деплоим latest
+    - name: Deploy App (latest)
+      if: github.ref_type != 'tag'
+      run: |
+        kubectl apply -f manifests/app/
+        kubectl rollout status deployment/diploma-app --timeout=180s
+
+    # 🔹 Если это tag — обновляем на версию
+    - name: Update image on tag
+      if: github.ref_type == 'tag'
+      run: |
+        kubectl set image deployment/diploma-app \
+          app=cr.yandex/crppthgv7553krfpenjf/diploma-app:${{ github.ref_name }} --record
+        kubectl rollout status deployment/diploma-app --timeout=180s
 
     - name: Verify
       run: kubectl wait --for=condition=ready pod -l app=diploma-app --timeout=120s
