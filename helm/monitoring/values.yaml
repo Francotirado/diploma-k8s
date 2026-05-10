@@ -1,8 +1,8 @@
 grafana:
   adminPassword: "admin"
   resources:
-    requests: { cpu: 20m, memory: 50Mi }
-    limits: { cpu: 50m, memory: 100Mi }
+    requests: { cpu: 50m, memory: 150Mi }
+    limits: { cpu: 200m, memory: 400Mi }
   ingress:
     enabled: true
     ingressClassName: nginx
