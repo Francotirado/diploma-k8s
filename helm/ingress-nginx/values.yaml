@@ -1,0 +1,15 @@
+controller:
+  hostNetwork: true
+  hostPort:
+    enabled: true
+    http: 80
+    https: 443
+  publishService:
+    enabled: false
+  resources:
+    requests: { cpu: 50m, memory: 90Mi }
+    limits: { cpu: 100m, memory: 150Mi }
+  tolerations:
+  - key: "node-role.kubernetes.io/master"
+    operator: "Exists"
+    effect: "NoSchedule"
