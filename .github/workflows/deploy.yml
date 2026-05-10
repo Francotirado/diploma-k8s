@@ -29,16 +29,10 @@ jobs:
         helm repo update
 
     - name: Deploy Ingress
-      run: >
-        helm upgrade --install ingress-nginx ingress-nginx/ingress-nginx
-        -n ingress-nginx --create-namespace
-        -f helm/ingress-nginx/values.yaml
+      run: helm upgrade --install ingress-nginx ingress-nginx/ingress-nginx -n ingress-nginx --create-namespace -f helm/ingress-nginx/values.yaml
 
     - name: Deploy Monitoring
-      run: >
-        helm upgrade --install monitoring prometheus-community/kube-prometheus-stack
-        -n monitoring --create-namespace
-        -f helm/monitoring/values.yaml
+      run: helm upgrade --install monitoring prometheus-community/kube-prometheus-stack -n monitoring --create-namespace -f helm/monitoring/values.yaml
 
     - name: Deploy App
       run: kubectl apply -f manifests/app/
