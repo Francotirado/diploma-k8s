@@ -1,0 +1,5 @@
+# Образ
+image:
+  repository: cr.yandex/crppthgv7553krfpenjf/diploma-app
+  pullPolicy: Always
+  tag: "latest"

@@ -64,9 +64,7 @@ jobs:
         kubectl wait --for=condition=ready pod -l app=mysql --timeout=120s
 
     - name: Deploy application
-      run: |
-        kubectl set image deployment/diploma-app app=cr.yandex/crppthgv7553krfpenjf/diploma-app:${{ env.TAG }} --record
-        kubectl rollout status deployment/diploma-app --timeout=300s
+      run: helm upgrade --install diploma-app ./helm/diploma-app --set image.tag=${{ env.TAG }} --wait --timeout 300s
 
     - name: Verify
       run: kubectl wait --for=condition=ready pod -l app=diploma-app --timeout=120s

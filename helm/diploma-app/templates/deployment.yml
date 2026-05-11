@@ -19,8 +19,8 @@ spec:
     spec:
       containers:
       - name: app
-        image: cr.yandex/crppthgv7553krfpenjf/diploma-app:latest
-        imagePullPolicy: Always
+        image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
         ports: [{ containerPort: 5000 }]
         env:
         - { name: DB_HOST, value: "mysql" }
