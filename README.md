@@ -6,21 +6,28 @@
 
 ```
 .
-├── .github
-│   └── workflows
-│       └── deploy.yml
 ├── helm
+│   ├── diploma-app
+│   │   ├── Chart.yaml
+│   │   ├── templates
+│   │   │   ├── deployment.yml
+│   │   │   ├── ingress.yml
+│   │   │   └── service.yml
+│   │   └── values.yaml
 │   ├── ingress-nginx
 │   │   └── values.yaml
 │   └── monitoring
 │       └── values.yaml
+├── img
+│   ├── 1.jpg
+│   ├── 2.jpg
+│   ├── 3.jpg
+│   └── 4.jpg
 ├── manifests
-│   └── app
+│   └── mysql
 │       ├── deployment.yml
-│       ├── ingress.yml
 │       └── service.yml
-├── README.md
-└── scripts
+└── README.md
 ```
 
 Данный репозиторий содержит манифесты Kubernetes для развертывания мониторинга кластера и приложения используя Dockerfile при помощи Nginx
